@@ -11,40 +11,85 @@
 
 body {
     margin: 0;
-    background-color: #000;
-    color: white;
     font-family: 'Montserrat', sans-serif;
     overflow: hidden;
+    background: #000;
+    color: white;
 }
 
-/* Slides */
+/* FUNDO ANIMADO BLOBS */
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -2;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 12s infinite ease-in-out alternate;
+}
+
+.blob1 {
+    width: 400px;
+    height: 400px;
+    background: #1DB954;
+    top: 10%;
+    left: 10%;
+}
+
+.blob2 {
+    width: 350px;
+    height: 350px;
+    background: #ff0080;
+    bottom: 10%;
+    right: 15%;
+}
+
+.blob3 {
+    width: 300px;
+    height: 300px;
+    background: #7928ca;
+    top: 40%;
+    right: 30%;
+}
+
+@keyframes float {
+    from { transform: translateY(-30px) translateX(-30px); }
+    to { transform: translateY(30px) translateX(30px); }
+}
+
+/* SLIDES */
 .slide {
-    display: none;
+    position: absolute;
+    width: 100%;
     height: 100vh;
-    width: 100vw;
     padding: 40px;
     box-sizing: border-box;
-    background: linear-gradient(180deg, #121212, #000);
-}
-
-.active {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    animation: fade 0.6s ease;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.7s cubic-bezier(.77,0,.18,1);
 }
 
-@keyframes fade {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+.slide.active {
+    transform: translateX(0);
+}
+
+.slide.prev {
+    transform: translateX(-100%);
 }
 
 h1 {
-    font-size: 38px;
+    font-size: 42px;
     font-weight: 900;
-    margin-bottom: 20px;
 }
 
 .highlight {
@@ -52,119 +97,103 @@ h1 {
 }
 
 .big-number {
-    font-size: 70px;
+    font-size: 80px;
     font-weight: 900;
-    color: #1DB954;
+    margin: 20px 0;
 }
 
-/* Barra estilo stories */
-.progress-container {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 4px;
-    background: #333;
-}
-
-.progress-bar {
-    height: 4px;
-    width: 0%;
-    background: #1DB954;
-    transition: width 0.3s;
-}
-
-/* Medalhas */
 .medal {
-    font-size: 22px;
-    margin: 10px 0;
+    font-size: 24px;
+    margin: 8px 0;
 }
 
-/* Imagens */
 img {
     max-width: 280px;
     border-radius: 20px;
     margin-top: 20px;
 }
 
-/* Spotify player */
 .spotify-player {
     margin-top: 20px;
     width: 100%;
     max-width: 400px;
 }
 
-/* Áreas de clique */
-.click-zone {
+/* Barra progresso */
+.progress {
     position: fixed;
     top: 0;
-    height: 100%;
-    width: 50%;
-    z-index: 10;
+    height: 4px;
+    width: 0%;
+    background: #1DB954;
+    transition: width 0.4s;
+    z-index: 5;
 }
 
-.left-zone {
-    left: 0;
-}
-
-.right-zone {
-    right: 0;
+.start-btn {
+    margin-top: 30px;
+    padding: 15px 35px;
+    border-radius: 30px;
+    border: none;
+    background: white;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 </style>
 </head>
 <body>
 
-<div class="progress-container">
-    <div class="progress-bar" id="progress"></div>
+<div class="background">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
 </div>
 
-<div class="click-zone left-zone" onclick="prevSlide()"></div>
-<div class="click-zone right-zone" onclick="nextSlide()"></div>
+<div class="progress" id="progress"></div>
 
-<!-- Slide 1 -->
 <div class="slide active">
-    <h1>Nosso Wrapped 2026 💚</h1>
-    <p>2 meses oficiais</p>
-    <p>Desde <span class="highlight">Outubro de 2025</span> escrevendo nossa história.</p>
+    <h1>Sua Retrospectiva chegou 💚</h1>
+    <p>Inspirado no Spotify Wrapped</p>
+    <button class="start-btn" onclick="nextSlide()">Entrar</button>
 </div>
 
-<!-- Slide 2 -->
+<div class="slide">
+    <h1>Nosso Wrapped 2026</h1>
+    <p>2 meses oficiais</p>
+    <p>Desde Outubro de 2025 escrevendo nossa história</p>
+</div>
+
 <div class="slide">
     <h1>Nós passamos</h1>
     <div class="big-number" id="counter">0</div>
-    <p>horas juntos desde Outubro 💚</p>
+    <p>horas juntos 💚</p>
 </div>
 
-<!-- Slide 3 -->
 <div class="slide">
     <h1>Frases mais repetidas</h1>
-
     <div class="medal">🥇 Já comeu hoje?</div>
     <div class="medal">🥈 Dia de treinar glúteo</div>
     <div class="medal">🥉 Bó muça</div>
 </div>
 
-<!-- Slide 4 -->
 <div class="slide">
     <h1>Piada interna oficial</h1>
     <p class="highlight">O segredo é o brócolis 🥦</p>
-    <img src="FOTO_MEME.jpg">
+    <img src="FOTO_MEME.png">
 </div>
 
-<!-- Slide 5 -->
 <div class="slide">
     <h1>Nosso lugar favorito</h1>
     <h1 class="highlight">Qualquer lugar juntos 💚</h1>
 </div>
 
-<!-- Slide 6 -->
 <div class="slide">
     <h1>Nossa música</h1>
     <h1 class="highlight">Innerbloom</h1>
-
     <div class="spotify-player">
-        <iframe data-testid="embed-iframe" 
-        style="border-radius:12px" 
+        <iframe style="border-radius:12px" 
         src="https://open.spotify.com/embed/track/6CGMZijOAZvTXG21T8t6R0?utm_source=generator&theme=0" 
         width="100%" 
         height="352" 
@@ -176,16 +205,10 @@ img {
     </div>
 </div>
 
-<!-- Slide 7 -->
 <div class="slide">
     <h1>Você foi meu Top Artista do Ano ❤️</h1>
     <img src="FOTO_NOS_DOIS.jpg">
-    <p class="highlight">Eu escolheria você em todos os universos.</p>
-</div>
-
-<!-- Slide 8 -->
-<div class="slide">
-    <h1>Renovar plano Premium?</h1>
+    <p>Eu escolheria você em todos os universos.</p>
 </div>
 
 <script>
@@ -204,45 +227,66 @@ function animateCounter() {
     let counter = document.getElementById("counter");
     let target = calculateHours();
     let count = 0;
-    let speed = target / 100;
 
     let interval = setInterval(() => {
-        count += speed;
+        count += Math.ceil(target / 80);
         if (count >= target) {
             count = target;
             clearInterval(interval);
         }
-        counter.innerText = Math.floor(count);
+        counter.innerText = count;
     }, 20);
 }
 
-function updateProgress() {
-    progress.style.width = (current / (slides.length - 1)) * 100 + "%";
+function updateSlides() {
+    slides.forEach((slide, i) => {
+        slide.classList.remove("active","prev");
+        if(i === current) slide.classList.add("active");
+        if(i < current) slide.classList.add("prev");
+    });
+
+    progress.style.width = (current/(slides.length-1))*100 + "%";
+
+    if(current === 2) animateCounter();
+
+    if(navigator.vibrate) navigator.vibrate(30);
 }
 
-function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove("active"));
-    slides[index].classList.add("active");
-    updateProgress();
-
-    if (index === 1) {
-        animateCounter();
-    }
-}
-
-function nextSlide() {
-    if (current < slides.length - 1) {
+function nextSlide(){
+    if(current < slides.length-1){
         current++;
-        showSlide(current);
+        updateSlides();
     }
 }
 
-function prevSlide() {
-    if (current > 0) {
+function prevSlide(){
+    if(current > 0){
         current--;
-        showSlide(current);
+        updateSlides();
     }
 }
+
+/* Swipe Mobile */
+let startX = 0;
+
+document.addEventListener("touchstart", e=>{
+    startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", e=>{
+    let endX = e.changedTouches[0].clientX;
+    if(startX - endX > 50) nextSlide();
+    if(endX - startX > 50) prevSlide();
+});
+
+/* Clique desktop */
+document.addEventListener("click", e=>{
+    if(e.clientX > window.innerWidth/2){
+        nextSlide();
+    } else {
+        prevSlide();
+    }
+});
 
 </script>
 
