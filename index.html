@@ -17,10 +17,12 @@ body {
     overflow: hidden;
 }
 
+/* Slides */
 .slide {
     display: none;
     height: 100vh;
-    padding: 60px 30px;
+    width: 100vw;
+    padding: 40px;
     box-sizing: border-box;
     background: linear-gradient(180deg, #121212, #000);
 }
@@ -29,17 +31,20 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    animation: fade 0.8s ease;
+    align-items: center;
+    text-align: center;
+    animation: fade 0.6s ease;
 }
 
 @keyframes fade {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
     font-size: 38px;
     font-weight: 900;
+    margin-bottom: 20px;
 }
 
 .highlight {
@@ -47,11 +52,12 @@ h1 {
 }
 
 .big-number {
-    font-size: 60px;
+    font-size: 70px;
     font-weight: 900;
     color: #1DB954;
 }
 
+/* Barra estilo stories */
 .progress-container {
     position: fixed;
     top: 0;
@@ -67,14 +73,41 @@ h1 {
     transition: width 0.3s;
 }
 
+/* Medalhas */
+.medal {
+    font-size: 22px;
+    margin: 10px 0;
+}
+
+/* Imagens */
 img {
     max-width: 280px;
     border-radius: 20px;
     margin-top: 20px;
 }
 
+/* Spotify player */
 .spotify-player {
     margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Áreas de clique */
+.click-zone {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    z-index: 10;
+}
+
+.left-zone {
+    left: 0;
+}
+
+.right-zone {
+    right: 0;
 }
 
 </style>
@@ -85,11 +118,14 @@ img {
     <div class="progress-bar" id="progress"></div>
 </div>
 
+<div class="click-zone left-zone" onclick="prevSlide()"></div>
+<div class="click-zone right-zone" onclick="nextSlide()"></div>
+
 <!-- Slide 1 -->
 <div class="slide active">
     <h1>Nosso Wrapped 2026 💚</h1>
     <p>2 meses oficiais</p>
-    <p>Mas desde <span class="highlight">Outubro de 2025</span> escrevendo nossa história.</p>
+    <p>Desde <span class="highlight">Outubro de 2025</span> escrevendo nossa história.</p>
 </div>
 
 <!-- Slide 2 -->
@@ -102,8 +138,10 @@ img {
 <!-- Slide 3 -->
 <div class="slide">
     <h1>Frases mais repetidas</h1>
-    <p class="highlight">"Já comeu hoje?"</p>
-    <p class="highlight">"Dia de treinar glúteo"</p>
+
+    <div class="medal">🥇 Já comeu hoje?</div>
+    <div class="medal">🥈 Dia de treinar glúteo</div>
+    <div class="medal">🥉 Bó muça</div>
 </div>
 
 <!-- Slide 4 -->
@@ -148,7 +186,6 @@ img {
 <!-- Slide 8 -->
 <div class="slide">
     <h1>Renovar plano Premium?</h1>
-    <h1 class="highlight">+12 meses com você 💚</h1>
 </div>
 
 <script>
@@ -179,25 +216,33 @@ function animateCounter() {
     }, 20);
 }
 
-function nextSlide() {
-    slides[current].classList.remove("active");
-    current++;
+function updateProgress() {
+    progress.style.width = (current / (slides.length - 1)) * 100 + "%";
+}
 
-    if (current < slides.length) {
-        slides[current].classList.add("active");
-        progress.style.width = (current / (slides.length - 1)) * 100 + "%";
+function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove("active"));
+    slides[index].classList.add("active");
+    updateProgress();
 
-        if (current === 1) {
-            animateCounter();
-        }
+    if (index === 1) {
+        animateCounter();
     }
 }
 
-document.body.addEventListener("click", () => {
+function nextSlide() {
     if (current < slides.length - 1) {
-        nextSlide();
+        current++;
+        showSlide(current);
     }
-});
+}
+
+function prevSlide() {
+    if (current > 0) {
+        current--;
+        showSlide(current);
+    }
+}
 
 </script>
 
